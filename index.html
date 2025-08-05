@@ -1,52 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>MindAR Web AR</title>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
+    <meta charset="UTF-8" />
+    <title>AR View Sample</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
       body {
         margin: 0;
-        overflow: hidden;
-      }
-      #ar-container {
-        width: 100vw;
+        padding: 0;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100vh;
-        position: relative;
+      }
+
+      model-viewer {
+        width: 100%;
+        height: 100%;
+        max-width: 600px;
       }
     </style>
   </head>
   <body>
-    <div id="ar-container"></div>
-
-    <script type="module">
-      import { loadGLTF } from "https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js";
-
-      const start = async () => {
-        const mindarThree = new window.MINDAR.IMAGE.MindARThree({
-          container: document.querySelector("#ar-container"),
-          imageTargetSrc: "https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/examples/image-tracking/assets/card-example/card.mind",
-        });
-
-        const { renderer, scene, camera } = mindarThree;
-
-        const anchor = mindarThree.addAnchor(0);
-
-        const box = new THREE.Mesh(
-          new THREE.BoxGeometry(0.5, 0.5, 0.5),
-          new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-        );
-
-        anchor.group.add(box);
-
-        await mindarThree.start();
-        renderer.setAnimationLoop(() => {
-          renderer.render(scene, camera);
-        });
-      };
-
-      start();
-    </script>
+    <model-viewer
+      src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+      alt="Astronaut model"
+      ar
+      ar-modes="scene-viewer webxr quick-look"
+      environment-image="neutral"
+      auto-rotate
+      camera-controls
+    >
+      <button slot="ar-button" style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: #fff; border-radius: 6px;">
+        View in AR
+      </button>
+    </model-viewer>
   </body>
 </html>
