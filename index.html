@@ -20,21 +20,45 @@
         height: 100%;
         max-width: 600px;
       }
+
+      #ar-button {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        background: #fff;
+        border-radius: 6px;
+      }
     </style>
   </head>
   <body>
     <model-viewer
-      src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-      alt="Astronaut model"
+      id="modelViewer"
+      src="/wood.glb"
+      alt="Wood model"
       ar
       ar-modes="scene-viewer webxr quick-look"
       environment-image="neutral"
       auto-rotate
       camera-controls
     >
-      <button slot="ar-button" style="position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); padding: 12px 24px; background: #fff; border-radius: 6px;">
-        View in AR
-      </button>
+      <button id="ar-button" slot="ar-button">View in AR</button>
     </model-viewer>
+
+    <script>
+      const modelViewer = document.getElementById('modelViewer');
+
+      function isMobileDevice() {
+        return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      }
+
+      // Attempt to launch AR after model is ready and if on mobile
+      modelViewer.addEventListener('load', () => {
+        if (isMobileDevice() && modelViewer.canActivateAR) {
+          modelViewer.activateAR();
+        }
+      });
+    </script>
   </body>
 </html>
